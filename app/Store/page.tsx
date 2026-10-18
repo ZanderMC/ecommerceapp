@@ -30,7 +30,8 @@ async function StoreData() {
         );
     }
 
-    const row = data?.[0];
+    const row = data
+  
 
     return (
         <>
@@ -38,11 +39,7 @@ async function StoreData() {
                 La consulta a la tabla test se completó correctamente.
             </p>
 
-            {row ? (
-                <pre>{JSON.stringify(row, null, 2)}</pre>
-            ) : (
-                <p>La tabla test no contiene filas.</p>
-            )}
+            {row ? <pre>{ JSON.stringify(row, null, 2)}</pre> :   <p>La tabla test no contiene filas.</p> }
         </>
     );
 }
