@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import { SearchBar } from "./SearchBar";
+import { GetAllProducts } from "../../utils/page";
 
 
 export function Catalog(){
@@ -22,21 +24,21 @@ export function Catalog(){
     <hr className="border-t border-gray-300 mb-10"/>   
 
         <SearchBar/>
-        <section className="w-auto h-auto bg-orange-300 grid grid-cols-4 py-10 gap-8 ">
-        <article className=" bg-red-400 w-full h-[70vh]">
-        </article>
-        <article className=" bg-red-400 w-full h-[70vh]">
-        </article>
-        <article className=" bg-red-400 w-full h-[70vh]">
-        </article>
-        <article className=" bg-red-400 w-full h-[70vh]">
-        </article>
-        <article className=" bg-red-400 w-full h-[70vh]">
-        </article>
+      
+              <main>
+                  <h1>Conexión con Supabase</h1>
+      
+                  <Suspense
+                      fallback={<p>Cargando datos de Supabase...</p>}
+                  >
+                      <GetAllProducts />
+                  </Suspense>
+              </main>
+         
 
         </section>
-       </section>
+       
     )
 }
 
- 
+  
