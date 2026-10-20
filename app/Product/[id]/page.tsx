@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase/client";
 import Image from "next/image";
+import { QuantitySelector } from "@/app/components/QuantitySelector";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -18,7 +19,7 @@ export default async function ProductPage({ params}: PageProps){
 
   if (error) {
     console.error('Error fetching product:', error);
-    return null;
+    return   <h1>Producto no encontrado</h1>;
   }
 
   
@@ -26,8 +27,7 @@ export default async function ProductPage({ params}: PageProps){
        
          <>
          <section className=" flex flex-row flex-1/2 my-32 mx-[4rem] gap-20">
-                {/* <img className="aspect-auto h-[10vh]  -mr-10" src={product.image_url} alt={product.name}>
-                <img className="aspect-auto w-[45vw] " src={product.image_url} alt={product.name}> */}
+            
                  <img
                  className="aspect-auto h-[10vh]  -mr-10"
       src={product.image_url}
@@ -58,14 +58,7 @@ export default async function ProductPage({ params}: PageProps){
 
                     <div className="mt-4 flex flex-col  gap-2">
                         <label htmlFor="quantity" className="block font-semibold">Cantidad:</label>
-                        <input
-                            id="quantity"
-                            name="quantity"
-                            type="number"
-                            // min={1}
-                            // value={1}
-                            className="border border-black px-2 py-3 w-16 text-center"
-                        />
+                        <QuantitySelector />
                     </div>
 
                     <button 
