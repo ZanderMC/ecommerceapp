@@ -12,7 +12,7 @@ export default async function ProductPage({ params}: PageProps){
   
   const { id } = await params
   const { data: product, error } = await supabase
-    .from('Product')
+    .from('product')
     .select('*')
     .eq('id', id)
     .single();

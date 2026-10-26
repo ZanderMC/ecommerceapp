@@ -15,11 +15,8 @@ type ProductGridProps = {
   emptyMessage: string;
 };
 
-export function ProductGrid({
-  products,
-  searchTerm,
-  emptyMessage,
-}: ProductGridProps) {
+export function ProductGrid({  products,  searchTerm,  emptyMessage,}: ProductGridProps) {
+  
   const filteredProducts = products.filter((product) =>
     (product.name ?? "").toLowerCase().includes(searchTerm),
   );
