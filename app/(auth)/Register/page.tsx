@@ -39,6 +39,21 @@ export default function RegisterPage() {
 
             <form action={signup} className="space-y-5">
               <div>
+                <label htmlFor="register-name" className="mb-2 block text-sm font-medium">
+                  Nombre
+                </label>
+                <input
+                  id="register-name"
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  required
+                  placeholder="Tu nombre"
+                  className="w-full bg-black/[0.06] px-4 py-3 text-sm outline-none transition placeholder:text-black/30 focus:bg-black/[0.1]"
+                />
+              </div>
+
+              <div>
                 <label htmlFor="register-email" className="mb-2 block text-sm font-medium">
                   Correo electrónico
                 </label>
