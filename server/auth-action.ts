@@ -36,21 +36,42 @@ export async function signup(formData: FormData) {
   const data = {
     email: String(formData.get('email') ?? '').trim(),
     password: String(formData.get('password') ?? ''),
+    name: String(formData.get('name') ?? '').trim(),
   }
 
-  if (!data.email || !data.password) {
-    redirect('/error?message=El correo y la contraseña son obligatorios')
+  if (!data.email || !data.password || !data.name) {
+    redirect('/error?message=El nombre, el correo y la contraseña son obligatorios')
   }
 
   const { data: signupData, error } = await supabase.auth.signUp({
-    ...data,
+    email: data.email,
+    password: data.password,
     options: {
       emailRedirectTo: `${origin}/api/auth/callback`,
+      data: {
+        name: data.name,
+      },
     },
   })
 
   if (error) {
     redirect(`/error?message=${encodeURIComponent(error.message)}`)
+  }
+
+  if (!signupData.user) {
+    redirect('/error?message=No se pudo crear el usuario')
+  }
+
+  if (signupData.session) {
+    const { error: profileError } = await supabase.from('profiles').upsert({
+      id: signupData.user.id,
+      name: data.name,
+      
+    })
+
+    if (profileError) {
+      redirect(`/error?message=${encodeURIComponent(profileError.message)}`)
+    }
   }
 
   if (!signupData.session) {
