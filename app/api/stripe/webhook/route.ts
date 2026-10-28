@@ -8,7 +8,14 @@ export async function POST(request: NextRequest) {
   const signature = request.headers.get("stripe-signature");
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-  if (!signature || !webhookSecret || !process.env.STRIPE_SECRET_KEY) {
+  if (!signature) {
+    return NextResponse.json({ error: "Falta la firma de Stripe." }, { status: 400 });
+  }
+
+  if (!webhookSecret || !process.env.STRIPE_SECRET_KEY) {
+    console.error(
+      "Webhook de Stripe no configurado: faltan STRIPE_WEBHOOK_SECRET o STRIPE_SECRET_KEY.",
+    );
     return NextResponse.json({ error: "Webhook de Stripe no configurado." }, { status: 500 });
   }
 
@@ -25,25 +32,57 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Firma inválida." }, { status: 400 });
   }
 
-  const session = event.data.object as Stripe.Checkout.Session;
-  const orderId = session.metadata?.order_id;
+  const supportedEvents = new Set([
+    "checkout.session.completed",
+    "checkout.session.async_payment_succeeded",
+    "checkout.session.async_payment_failed",
+    "checkout.session.expired",
+  ]);
 
-  if (
-    !orderId ||
-    (event.type !== "checkout.session.completed" &&
-      event.type !== "checkout.session.async_payment_succeeded" &&
-      event.type !== "checkout.session.async_payment_failed")
-  ) {
+  if (!supportedEvents.has(event.type)) {
     return NextResponse.json({ received: true });
   }
 
-  const supabase = createServiceClient();
+  const session = event.data.object as Stripe.Checkout.Session;
+  const orderId = session.metadata?.order_id;
+
+  if (!orderId || !Number.isSafeInteger(Number(orderId))) {
+    console.error("Webhook sin order_id válido:", event.id);
+    return NextResponse.json({ received: true });
+  }
+
   const status =
+    event.type === "checkout.session.expired" ||
     event.type === "checkout.session.async_payment_failed"
       ? "failed"
       : session.payment_status !== "unpaid"
         ? "paid"
         : "pending";
+
+  let supabase;
+
+  try {
+    supabase = createServiceClient();
+  } catch (error) {
+    console.error("No se pudo crear el cliente de servicio de Supabase:", error);
+    return NextResponse.json({ error: "Supabase no está configurado para el webhook." }, { status: 500 });
+  }
+
+  const { data: currentPayment, error: paymentLookupError } = await supabase
+    .from("payment")
+    .select("status")
+    .eq("order_id", Number(orderId))
+    .eq("stripe_checkout_session_id", session.id)
+    .single();
+
+  if (paymentLookupError || !currentPayment) {
+    console.error("No se encontró el pago para el webhook:", paymentLookupError);
+    return NextResponse.json({ error: "Pago no encontrado." }, { status: 500 });
+  }
+
+  if (currentPayment.status === "paid" || currentPayment.status === "refunded") {
+    return NextResponse.json({ received: true });
+  }
 
   const { error } = await supabase
     .from("payment")

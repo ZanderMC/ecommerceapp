@@ -160,8 +160,8 @@ export async function POST(request: NextRequest) {
       order_id: String(order.id),
       user_id: user.id,
     },
-    success_url: `${getAppUrl(request)}/ShoppingCart?checkout=success`,
-    cancel_url: `${getAppUrl(request)}/ShoppingCart?checkout=cancelled`,
+    success_url: `${getAppUrl(request)}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${getAppUrl(request)}/checkout/cancelled`,
     integration_identifier: `ecommerce_checkout_${crypto.randomUUID().replace(/-/g, "").slice(0, 8)}`,
   });
 
