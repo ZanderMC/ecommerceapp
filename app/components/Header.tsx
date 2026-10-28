@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { UserPerfil } from "./UserPerfil";
+import { CartIcon } from "./CartIcon";
 
 export function Header(){
 
@@ -19,12 +20,7 @@ export function Header(){
     <div className ="flex gap-4 justify-end">
     <a href="">IG</a>
     <a href="">FB</a>
-    <a href="/ShoppingCart" className ="relative">
-    🛒 
-    <span id="cart-count" className ="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-        0
-    </span>
-    </a>
+    <CartIcon />
        <UserPerfil/>
     </div>
 </header> 

@@ -1,6 +1,5 @@
 import { supabase } from "@/lib/supabase/client";
-import Image from "next/image";
-import { QuantitySelector } from "@/app/components/QuantitySelector";
+import { AddToCart } from "@/app/components/AddToCart";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -45,29 +44,15 @@ export default async function ProductPage({ params}: PageProps){
                     <span className="text-xl font-bold mt-4">{product.price} SOLES</span>
                     <span className="block mb-2 font-semibold mt-4">Descripción</span>
                     <p>{product.description}</p>
-                    {product.sizes && product.sizes.length > 0 && (
-                        <div className="mt-4">
-                            <label htmlFor="size"  className="block mb-2 font-semibold">Selecciona una talla:</label>
-                            <select id="size" name="size" className="border w-full  border-black px-2 py-3">
-                                {product.sizes.map((size: any , id : number) => (
-                                    <option value={size}  key={id} >{size}</option>
-                                ))}
-                            </select>
-                        </div>
-                    )}
-
-                    <div className="mt-4 flex flex-col  gap-2">
-                        <label htmlFor="quantity" className="block font-semibold">Cantidad:</label>
-                        <QuantitySelector />
-                    </div>
-
-                    <button 
-                        id="add-to-cart-btn"
-                        className="mt-6 px-4 py-4 bg-black text-white rounded cursor-pointer hover:bg-black/90 transition-colors"
-                        data-product={JSON.stringify(product)}
-                    >
-                        Añadir al carrito 
-                    </button>
+                    <AddToCart
+                      product={{
+                        id: product.id,
+                        name: product.name,
+                        price: Number(product.price),
+                        image_url: product.image_url,
+                      }}
+                      sizes={(product.sizes ?? []) as string[]}
+                    />
                 </div>
             </section>
 
