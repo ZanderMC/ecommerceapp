@@ -12,7 +12,7 @@ export async function GetProducts(activeTab: ProductTab = "todo"): Promise<{
     let productQuery = supabase.from("product").select("*");
 
     if (activeTab === "ofertas") {
-        productQuery = productQuery.eq("isOnOffer", true);
+        productQuery = productQuery.eq("is_discounted", true);
     }
 
     if (activeTab === "favoritos") {
@@ -23,9 +23,9 @@ export async function GetProducts(activeTab: ProductTab = "todo"): Promise<{
         }
 
         const { data: favorites, error: favoritesError } = await supabase
-            .from("favorites")
+            .from("favorite")
             .select("product_id")
-            .eq("user_id", user.id);
+            .eq("profile_id", user.id);
 
         if (favoritesError) {
             return { products: [], message: `No se pudieron cargar tus favoritos: ${favoritesError.message}` };
