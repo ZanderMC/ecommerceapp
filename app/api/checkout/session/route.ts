@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
   try {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-    if (session.metadata?.user_id !== user.id) {
+    if (session.metadata?.profile_id !== user.id) {
       return NextResponse.json({ error: "No tienes acceso a esta transacción." }, { status: 403 });
     }
 

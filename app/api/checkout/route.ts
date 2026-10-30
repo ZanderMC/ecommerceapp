@@ -119,7 +119,7 @@ export async function POST(request: NextRequest) {
 
   const { data: order, error: orderError } = await supabase
     .from("customer_order")
-    .insert({ user_id: user.id })
+    .insert({ profile_id: user.id })
     .select("id")
     .single();
 
@@ -158,7 +158,7 @@ export async function POST(request: NextRequest) {
     })),
     metadata: {
       order_id: String(order.id),
-      user_id: user.id,
+      profile_id: user.id,
     },
     success_url: `${getAppUrl(request)}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${getAppUrl(request)}/checkout/cancelled`,
