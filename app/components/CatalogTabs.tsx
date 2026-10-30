@@ -64,6 +64,7 @@ export function CatalogTabs({
       </div>
       <ProductGrid
         emptyMessage={activeContent.emptyMessage}
+        isFavoritesView={activeTab === "favoritos"}
         products={activeContent.products}
         searchTerm={searchTerm}
       />
