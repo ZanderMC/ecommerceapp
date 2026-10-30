@@ -4,6 +4,8 @@ type ErrorPageProps = {
   searchParams: Promise<{ message?: string }>
 }
 
+//export const instant = false
+
 export default async function ErrorPage({ searchParams }: ErrorPageProps) {
   const { message } = await searchParams
 

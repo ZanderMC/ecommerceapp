@@ -13,6 +13,8 @@ import { Header } from "@/app/components/Header";
 
 export default function ShoppingCartPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [checkoutError, setCheckoutError] = useState("");
 
   useEffect(() => {
     const updateCart = () => setCart(getCart());
@@ -39,6 +41,33 @@ export default function ShoppingCartPage() {
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
+
+  async function handleCheckout() {
+    setIsCheckingOut(true);
+    setCheckoutError("");
+
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: cart.map(({ id, quantity, size }) => ({ id, quantity, size })),
+        }),
+      });
+      const result = (await response.json()) as { url?: string; error?: string };
+
+      if (!response.ok || !result.url) {
+        throw new Error(result.error ?? "No se pudo iniciar el checkout.");
+      }
+
+      window.location.assign(result.url);
+    } catch (error) {
+      setCheckoutError(
+        error instanceof Error ? error.message : "No se pudo iniciar el checkout.",
+      );
+      setIsCheckingOut(false);
+    }
+  }
 
   return (
     <>
@@ -106,11 +135,17 @@ export default function ShoppingCartPage() {
             </div>
             <button
               className="w-full bg-black px-4 py-3 text-white"
-              onClick={() => alert("El checkout estará disponible próximamente.")}
+              disabled={isCheckingOut}
+              onClick={handleCheckout}
               type="button"
             >
-              Finalizar compra
+              {isCheckingOut ? "Redirigiendo..." : "Finalizar compra"}
             </button>
+            {checkoutError && (
+              <p className="mt-3 text-sm text-red-700" role="alert">
+                {checkoutError}
+              </p>
+            )}
           </aside>
         </div>
       )}
