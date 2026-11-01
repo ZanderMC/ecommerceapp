@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { addToCart, CartProduct } from "@/lib/cart";
 
 type AddToCartProps = {
@@ -11,7 +12,6 @@ type AddToCartProps = {
 export function AddToCart({ product, sizes }: AddToCartProps) {
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState(sizes[0] ?? "");
-  const [message, setMessage] = useState("");
 
   function updateQuantity(value: string) {
     const parsedValue = Number.parseInt(value, 10);
@@ -24,7 +24,7 @@ export function AddToCart({ product, sizes }: AddToCartProps) {
       quantity,
       ...(size ? { size } : {}),
     });
-    setMessage("Producto añadido al carrito.");
+    toast.success("Producto añadido al carrito.");
   }
 
   return (
@@ -89,7 +89,6 @@ export function AddToCart({ product, sizes }: AddToCartProps) {
       >
         Añadir al carrito
       </button>
-      {message && <p className="text-sm text-green-700">{message}</p>}
     </div>
   );
 }

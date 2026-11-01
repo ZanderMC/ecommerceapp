@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
 
 export type Product = {
   id: string | number;
@@ -75,11 +76,11 @@ export function ProductGrid({
       });
 
       if (response.status === 401) {
-        window.alert("Inicia sesión para agregar productos a favoritos.");
+        toast.error("Inicia sesión para agregar productos a favoritos.");
         return;
       }
       if (!response.ok) {
-        window.alert("No se pudo actualizar tu favorito.");
+        toast.error("No se pudo actualizar tu favorito.");
         return;
       }
 
@@ -89,6 +90,11 @@ export function ProductGrid({
         else next.add(productId);
         return next;
       });
+      toast.success(
+        isFavorite
+          ? "Producto quitado de favoritos."
+          : "Producto añadido a favoritos.",
+      );
     } finally {
       setUpdatingId(null);
     }
