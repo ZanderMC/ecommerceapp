@@ -106,7 +106,7 @@ export default function ShoppingCartPage() {
                     <input
                       id={`quantity-${item.id}-${item.size ?? ""}`}
                       className="w-16 border border-black px-2 py-1"
-                      min="0"
+                      min="1"
                       onChange={(event) =>
                         updateItem(item, Number.parseInt(event.target.value, 10) || 0)
                       }
