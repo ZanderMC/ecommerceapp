@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -20,7 +19,7 @@ export function SearchBar({ onSearch }: SearchBarProps) {
   }, [onSearch, value]);
 
   return (
-    <div className="fadeIn mx-auto mb-16 flex h-auto w-[20rem] items-center justify-between rounded-2xl border-2 border-gray-300 bg-white px-6 py-2">
+    <div className="mt-10 mx-auto mb-16 flex h-auto w-[20rem] items-center justify-between rounded-2xl border-2 border-gray-300 bg-white px-6 py-2">
       <input
         aria-label="Buscar productos"
         className="w-full bg-transparent text-gray-700 outline-none placeholder-gray-400"

@@ -10,7 +10,7 @@ export async function Catalog(){
 
     return(
        <section className="w-screen h-screen px-[4rem] "     >
-    <hr className="border-t border-gray-300 mb-10"/>   
+    {/**<hr className="border-t border-gray-300 mb-10"/>   */} 
               <main>
                   <CatalogTabs
                       allProducts={allProducts.products}
