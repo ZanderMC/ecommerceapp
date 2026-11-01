@@ -1,5 +1,5 @@
-import { supabase } from "@/lib/supabase/client";
 import { AddToCart } from "@/app/components/AddToCart";
+import { createClient } from "@/lib/supabase/server";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -8,8 +8,9 @@ type PageProps = {
 export const instant = false
 
 export default async function ProductPage({ params}: PageProps){
-  
-  const { id } = await params
+  const { id } = await params;
+  const supabase = await createClient();
+
   const { data: product, error } = await supabase
     .from('product')
     .select('*')
