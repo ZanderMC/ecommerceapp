@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createServiceClient } from "@/lib/supabase/service";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "");
+import { getStripeClient } from "@/lib/stripe";
 
 export async function POST(request: NextRequest) {
   const signature = request.headers.get("stripe-signature");
@@ -16,6 +15,14 @@ export async function POST(request: NextRequest) {
     console.error(
       "Webhook de Stripe no configurado: faltan STRIPE_WEBHOOK_SECRET o STRIPE_SECRET_KEY.",
     );
+    return NextResponse.json({ error: "Webhook de Stripe no configurado." }, { status: 500 });
+  }
+
+  let stripe: ReturnType<typeof getStripeClient>;
+
+  try {
+    stripe = getStripeClient();
+  } catch {
     return NextResponse.json({ error: "Webhook de Stripe no configurado." }, { status: 500 });
   }
 

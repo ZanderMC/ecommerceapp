@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import Stripe from "stripe";
 import { createClient } from "@/lib/supabase/server";
+import { getStripeClient } from "@/lib/stripe";
 
 type CartItemInput = {
   id: string | number;
   quantity: number;
   size?: string;
 };
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "");
 
 function getAppUrl(request: NextRequest) {
   const configuredUrl = process.env.NEXT_PUBLIC_APP_URL;
@@ -21,7 +19,11 @@ function getAppUrl(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  if (!process.env.STRIPE_SECRET_KEY) {
+  let stripe: ReturnType<typeof getStripeClient>;
+
+  try {
+    stripe = getStripeClient();
+  } catch {
     return NextResponse.json(
       { error: "Stripe no está configurado en el servidor." },
       { status: 500 },

@@ -1,14 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
-import Stripe from "stripe";
 import { createClient } from "@/lib/supabase/server";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "");
+import { getStripeClient } from "@/lib/stripe";
 
 export async function GET(request: NextRequest) {
   const sessionId = request.nextUrl.searchParams.get("session_id");
 
   if (!sessionId || !sessionId.startsWith("cs_")) {
     return NextResponse.json({ error: "Sesión de checkout inválida." }, { status: 400 });
+  }
+
+  let stripe: ReturnType<typeof getStripeClient>;
+
+  try {
+    stripe = getStripeClient();
+  } catch {
+    return NextResponse.json(
+      { error: "Stripe no está configurado en el servidor." },
+      { status: 500 },
+    );
   }
 
   const supabase = await createClient();
