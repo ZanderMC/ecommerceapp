@@ -1,8 +1,12 @@
 import Link from "next/link";
+import { LogOut } from "@/server/auth-action";
+import { createClient } from "@/lib/supabase/server";
 import { UserPerfil } from "./UserPerfil";
 import { CartIcon } from "./CartIcon";
 
-export function Header(){
+export async function Header(){
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
 
     return(
        <header className ="h-auto grid grid-cols-3 w-full   items-center justify-between px-15 pt-15  ">
@@ -21,7 +25,7 @@ export function Header(){
     <a href="">IG</a>
     <a href="">FB</a>
     <CartIcon />
-       <UserPerfil/>
+       <UserPerfil isLoggedIn={Boolean(user)} logoutAction={LogOut}/>
     </div>
 </header> 
     )
