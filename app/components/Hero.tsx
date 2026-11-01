@@ -3,10 +3,9 @@
 import { useEffect, useState } from 'react'
 
 const slides = [
-    { src: '/images/slide1.jpg', alt: 'Slide 1' },
-    { src: '/images/slide2.jpg', alt: 'Slide 2' },
-    { src: '/images/slide3.jpg', alt: 'Slide 3' },
-]
+    { src: '/public/img1.jpeg', alt: 'Slide1' },
+//    { src: '/public/img2.jpeg', alt: 'Slide2' },
+ ]
 
 export function Hero() {
     const [currentSlide, setCurrentSlide] = useState(0)
