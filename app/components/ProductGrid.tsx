@@ -102,11 +102,16 @@ export function ProductGrid({
 
   if (filteredProducts.length === 0) {
     return (
-      <p>
+      <div className="w-full h-[25vw]   flex flex-col items-center justify-around">
+        <p className="text-2xl ">
         {searchTerm
           ? "No encontramos productos que coincidan con tu búsqueda."
           : emptyMessage}
       </p>
+      <div>
+        
+      </div>
+      </div>
     );
   }
 

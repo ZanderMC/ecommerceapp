@@ -9,11 +9,11 @@ export const instant = false;
 export default function Home() {
   return (
     <>
-   
-     <Header/>
-      {/*<Hero/>*/}
-     <Catalog/>
-     <Footer/>
+      <Header />
+      <main className="flex-1">
+        <Catalog />
+      </main>
+      <Footer />
     </>
   );
 }

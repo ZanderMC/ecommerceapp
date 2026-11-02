@@ -9,9 +9,9 @@ export async function Catalog(){
     ]);
 
     return(
-       <section className="w-full px-5 py-8 sm:px-8 lg:px-16"     >
+       <section className=" w-full px-5 py-8 sm:px-8 lg:px-16"     >
     {/**<hr className="border-t border-gray-300 mb-10"/>   */} 
-              <main>
+               
                   <CatalogTabs
                       allProducts={allProducts.products}
                       offers={offers.products}
@@ -19,7 +19,7 @@ export async function Catalog(){
                       offersMessage={offers.message}
                       favoritesMessage={favorites.message}
                   />
-              </main>
+              
         </section>
        
     )

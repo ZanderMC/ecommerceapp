@@ -19,7 +19,7 @@ export function SearchBar({ onSearch }: SearchBarProps) {
   }, [onSearch, value]);
 
   return (
-    <div className="mt-10 mx-auto mb-16 flex h-auto w-[20rem] items-center justify-between rounded-2xl border-2 border-gray-300 bg-white px-6 py-2">
+    <div className=" bg-white mx-auto mt-8 mb-10 flex h-auto w-full max-w-xl items-center justify-between rounded-2xl border-2 border-gray-300   px-4 py-2 sm:mt-10 sm:mb-16 sm:px-4 ">
       <input
         aria-label="Buscar productos"
         className="w-full bg-transparent text-gray-700 outline-none placeholder-gray-400"

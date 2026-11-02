@@ -42,7 +42,7 @@ export function CatalogTabs({
   return (
     <>
       <SearchBar onSearch={handleSearch} />
-      <div className="mb-8 flex flex-wrap items-center justify-center gap-2" role="tablist">
+      <div className="  mb-8 flex flex-wrap items-center justify-center gap-2" role="tablist">
         {tabs.map((tab, index) => (
           <div className="flex items-center" key={tab.id}>
             {index > 0 && <div className="mx-1 hidden h-6 w-px bg-gray-300 sm:mx-3 sm:block" />}
