@@ -1,113 +1,142 @@
- este e smi esquema de la base de datos :
+# Zandev
 
+**Live Demo:** [e-commerceapp-zdr.vercel.app](https://e-commerceapp-zdr.vercel.app/)
 
-CREATE TABLE public.profiles (
-  id uuid NOT NULL,
-  name text NOT NULL,
-  role text,
-  created_at timestamp with time zone NOT NULL DEFAULT now(),
-  CONSTRAINT profiles_pkey PRIMARY KEY (id),
-  CONSTRAINT profiles_id_fkey FOREIGN KEY (id) REFERENCES auth.users(id)
-);
-CREATE TABLE public.category (
-  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
-  name text NOT NULL,
-  CONSTRAINT category_pkey PRIMARY KEY (id)
-);
-CREATE TABLE public.product (
-  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
-  name text NOT NULL,
-  description text,
-  price numeric NOT NULL CHECK (price >= 0::numeric),
-  image_url text,
-  sizes ARRAY NOT NULL DEFAULT '{}'::text[],
-  details jsonb,
-  is_discounted boolean NOT NULL DEFAULT false,
-  category_id bigint NOT NULL,
-  created_at timestamp with time zone NOT NULL DEFAULT now(),
-  updated_at timestamp with time zone NOT NULL DEFAULT now(),
-  CONSTRAINT product_pkey PRIMARY KEY (id),
-  CONSTRAINT product_category_id_fkey FOREIGN KEY (category_id) REFERENCES public.category(id)
-);
-CREATE TABLE public.customer_order (
-  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
-  user_id uuid NOT NULL,
-  created_at timestamp with time zone DEFAULT now(),
-  CONSTRAINT customer_order_pkey PRIMARY KEY (id),
-  CONSTRAINT customer_order_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id)
-);
-CREATE TABLE public.order_item (
-  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
-  order_id bigint NOT NULL,
-  product_id bigint NOT NULL,
-  quantity integer NOT NULL CHECK (quantity > 0),
-  unit_price numeric NOT NULL CHECK (unit_price >= 0::numeric),
-  CONSTRAINT order_item_pkey PRIMARY KEY (id),
-  CONSTRAINT order_item_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.customer_order(id),
-  CONSTRAINT order_item_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.product(id)
-);
-CREATE TABLE public.payment (
-  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
-  order_id bigint NOT NULL,
-  stripe_checkout_session_id text UNIQUE,
-  stripe_payment_intent_id text UNIQUE,
-  amount numeric NOT NULL CHECK (amount > 0::numeric),
-  currency text NOT NULL DEFAULT 'pen'::text CHECK (currency = ANY (ARRAY['pen'::text, 'usd'::text])),
-  status text NOT NULL DEFAULT 'pending'::text CHECK (status = ANY (ARRAY['pending'::text, 'paid'::text, 'failed'::text, 'refunded'::text])),
-  created_at timestamp with time zone NOT NULL DEFAULT now(),
-  paid_at timestamp with time zone,
-  CONSTRAINT payment_pkey PRIMARY KEY (id),
-  CONSTRAINT payment_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.customer_order(id)
-);
-CREATE TABLE public.favorite (
-  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
-  user_id uuid NOT NULL,
-  product_id bigint NOT NULL,
-  CONSTRAINT favorite_pkey PRIMARY KEY (id),
-  CONSTRAINT favorite_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id),
-  CONSTRAINT favorite_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.product(id)
-);
-CREATE TABLE public.review (
-  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
-  user_id uuid NOT NULL,
-  product_id bigint NOT NULL,
-  rating integer CHECK (rating >= 1 AND rating <= 5),
-  comment text,
-  created_at timestamp with time zone DEFAULT now(),
-  CONSTRAINT review_pkey PRIMARY KEY (id),
-  CONSTRAINT review_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id),
-  CONSTRAINT review_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.product(id)
-);
-## Pagos con Stripe
+## English
 
-El checkout usa Stripe Checkout para pagos únicos en PEN. El servidor valida cada
-producto y su precio contra Supabase antes de crear la sesión; el navegador no
-puede definir el importe final.
+ecommerceapp is a full-stack fashion e-commerce application. Users can create an
+account, browse products by category, view product details, add items to a
+shopping cart, save favorites, and complete one-time payments through Stripe
+Checkout. The application also includes authentication, checkout result pages,
+and server-side payment status tracking through Stripe webhooks.
 
-Variables requeridas en el entorno del servidor:
+The project is designed for deployment with Vercel and uses Supabase for
+authentication, data persistence, and product management.
+
+### Features
+
+- User registration, login, and session management with Supabase Auth.
+- Product catalog with categories, images, sizes, descriptions, and offers.
+- Product detail pages and responsive shopping experience.
+- Shopping cart with product quantities and selected sizes.
+- Favorites for authenticated users.
+- Stripe Checkout integration for one-time payments in PEN.
+- Secure server-side price validation before creating a checkout session.
+- Checkout success, cancellation, and payment status pages.
+- Stripe webhook processing for completed, failed, asynchronous, and expired payments.
+- Supabase Row Level Security support for application data.
+- Responsive layout for desktop and mobile devices.
+
+### Tech stack
+
+- Next.js 16 with the App Router and Turbopack.
+- React 19 and TypeScript.
+- Tailwind CSS 4.
+- Supabase Auth and Supabase PostgreSQL.
+- Supabase SSR for browser and server clients.
+- Stripe Checkout and Stripe webhooks.
+- React Hot Toast for notifications.
+- Vercel for deployment.
+
+### Environment variables
+
+Create a `.env.local` file for local development. In production, configure
+these values in the hosting provider's environment settings:
 
 ```env
-STRIPE_SECRET_KEY=rk_...
+NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 SUPABASE_SERVICE_ROLE_KEY=...
-NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-La clave restringida de Stripe (`rk_...`) debe tener únicamente los permisos
-necesarios para Checkout. Nunca la expongas al cliente ni la guardes en el
-repositorio.
+Only variables with the `NEXT_PUBLIC_` prefix are exposed to the browser.
+Never expose or commit `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, or
+`SUPABASE_SERVICE_ROLE_KEY`.
 
-Configura en Stripe el endpoint `POST /api/stripe/webhook` y habilita al menos
-estos eventos:
-
-- `checkout.session.completed`
-- `checkout.session.async_payment_succeeded`
-- `checkout.session.async_payment_failed`
-
-El webhook verifica la firma y actualiza `payment.status`; la página de éxito
-no confirma pagos por sí sola. Para desarrollo local, Stripe CLI puede reenviar
-eventos al endpoint:
+### Local development
 
 ```bash
-stripe listen --forward-to localhost:3000/api/stripe/webhook
+npm install
+npm run dev
+```
+
+For local Stripe webhook testing:
+
+```bash
+stripe listen --events checkout.session.completed,checkout.session.async_payment_succeeded,checkout.session.async_payment_failed,checkout.session.expired --forward-to localhost:3000/api/stripe/webhook
+```
+
+---
+
+## Español
+
+ecommerce es una aplicación full-stack de comercio electrónico de moda. Los
+usuarios pueden crear una cuenta, explorar productos por categoría, consultar
+el detalle de cada producto, agregar artículos al carrito, guardar favoritos y
+realizar pagos únicos mediante Stripe Checkout. La aplicación también incluye
+autenticación, páginas de resultado del checkout y seguimiento del estado de
+los pagos mediante webhooks de Stripe.
+
+El proyecto está preparado para desplegarse en Vercel y utiliza Supabase para
+la autenticación, la persistencia de datos y la gestión del catálogo.
+
+### Funcionalidades
+
+- Registro, inicio de sesión y gestión de sesiones con Supabase Auth.
+- Catálogo de productos con categorías, imágenes, tallas, descripciones y ofertas.
+- Páginas de detalle de producto y experiencia de compra responsive.
+- Carrito de compras con cantidades y tallas seleccionadas.
+- Sistema de favoritos para usuarios autenticados.
+- Integración con Stripe Checkout para pagos únicos en PEN.
+- Validación segura del precio en el servidor antes de crear el checkout.
+- Páginas de checkout exitoso, cancelado y estado del pago.
+- Procesamiento de webhooks de Stripe para pagos completados, fallidos,
+  asíncronos y sesiones expiradas.
+- Soporte para Row Level Security de Supabase.
+- Diseño responsive para dispositivos móviles y escritorio.
+
+### Tecnologías utilizadas
+
+- Next.js 16 con App Router y Turbopack.
+- React 19 y TypeScript.
+- Tailwind CSS 4.
+- Supabase Auth y Supabase PostgreSQL.
+- Supabase SSR para clientes de navegador y servidor.
+- Stripe Checkout y webhooks de Stripe.
+- React Hot Toast para notificaciones.
+- Vercel para el despliegue.
+
+### Variables de entorno
+
+Crea un archivo `.env.local` para el desarrollo local. En producción,
+configura estos valores como variables de entorno privadas en el proveedor de
+hosting:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+SUPABASE_SERVICE_ROLE_KEY=...
+```
+
+Solo las variables con el prefijo `NEXT_PUBLIC_` se exponen al navegador.
+Nunca expongas ni subas al repositorio `STRIPE_SECRET_KEY`,
+`STRIPE_WEBHOOK_SECRET` o `SUPABASE_SERVICE_ROLE_KEY`.
+
+### Desarrollo local
+
+```bash
+npm install
+npm run dev
+```
+
+Para probar los webhooks de Stripe localmente:
+
+```bash
+stripe listen --events checkout.session.completed,checkout.session.async_payment_succeeded,checkout.session.async_payment_failed,checkout.session.expired --forward-to localhost:3000/api/stripe/webhook
 ```
