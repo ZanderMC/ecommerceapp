@@ -72,8 +72,8 @@ export default function ShoppingCartPage() {
   return (
     <>
       <Header />
-      <main className="mx-auto w-full max-w-5xl px-6 py-12">
-      <h1 className="mb-10 text-4xl font-semibold">Tu carrito</h1>
+      <main className="mx-auto w-full max-w-6xl px-5 py-10 sm:px-8 sm:py-12">
+      <h1 className="mb-8 text-3xl font-semibold sm:mb-10 sm:text-4xl">Tu carrito</h1>
 
       {cart.length === 0 ? (
         <section>
@@ -83,18 +83,18 @@ export default function ShoppingCartPage() {
           </Link>
         </section>
       ) : (
-        <div className="grid gap-10 lg:grid-cols-[1fr_280px]">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-10">
           <section className="space-y-6">
             {cart.map((item) => (
               <article
-                className="flex gap-4 border-b border-black/10 pb-6"
+                className="flex flex-wrap gap-3 border-b border-black/10 pb-6 sm:flex-nowrap sm:gap-4"
                 key={`${item.id}-${item.size ?? ""}`}
               >
                 {item.image_url && (
                   <img
                     src={item.image_url}
                     alt={item.name}
-                    className="h-28 w-24 object-cover"
+                    className="h-28 w-24 shrink-0 object-cover"
                   />
                 )}
                 <div className="flex flex-1 flex-col gap-2">
@@ -122,12 +122,12 @@ export default function ShoppingCartPage() {
                     </button>
                   </div>
                 </div>
-                <p className="font-semibold">{formatPrice(item.price * item.quantity)}</p>
+                <p className="ml-auto self-start font-semibold">{formatPrice(item.price * item.quantity)}</p>
               </article>
             ))}
           </section>
 
-          <aside className="h-fit border border-black/10 p-6">
+          <aside className="h-fit border border-black/10 p-5 sm:p-6 lg:sticky lg:top-6">
             <h2 className="mb-4 text-xl font-semibold">Resumen</h2>
             <div className="mb-6 flex justify-between border-t border-black/10 pt-4 font-semibold">
               <span>Total</span>

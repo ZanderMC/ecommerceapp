@@ -111,14 +111,14 @@ export function ProductGrid({
   }
 
   return (
-    <div className="grid h-auto w-full grid-cols-1 gap-8 pb-[2rem] sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid h-auto w-full grid-cols-2 gap-x-3 gap-y-8 pb-8 sm:gap-6 lg:grid-cols-4">
       {filteredProducts.map((product) => (
         <Link
           className="w-full"
           href={`/Product/${product.id}/`}
           key={product.id}
         >
-          <div className="relative h-[60vh] w-full">
+          <div className="relative aspect-[3/4] w-full">
             {product.image_url ? (
               <img
                 alt={product.name ?? "Producto"}
@@ -144,8 +144,8 @@ export function ProductGrid({
               </span>
             </button>
           </div>
-          <div className="px-4 pt-3">
-            <h2 className="text-[1.5rem] font-medium">
+          <div className="px-1 pt-3 sm:px-2">
+            <h2 className="text-base font-medium sm:text-xl">
               {product.name || "Nombre del producto"}
             </h2>
             <span className="text-xs font-light">

@@ -42,13 +42,13 @@ export function CatalogTabs({
   return (
     <>
       <SearchBar onSearch={handleSearch} />
-      <div className="mb-8 flex items-center justify-center" role="tablist">
+      <div className="mb-8 flex flex-wrap items-center justify-center gap-2" role="tablist">
         {tabs.map((tab, index) => (
           <div className="flex items-center" key={tab.id}>
-            {index > 0 && <div className="mx-4 h-6 w-px bg-gray-300" />}
+            {index > 0 && <div className="mx-1 hidden h-6 w-px bg-gray-300 sm:mx-3 sm:block" />}
             <button
               aria-selected={activeTab === tab.id}
-              className={`px-6 py-3 font-medium transition-colors duration-200 ${
+              className={`px-4 py-3 text-sm font-medium transition-colors duration-200 sm:px-6 sm:text-base ${
                 activeTab === tab.id
                   ? "text-gray-900 underline underline-offset-8"
                   : "text-gray-700 hover:text-gray-900"

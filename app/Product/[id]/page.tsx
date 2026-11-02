@@ -26,25 +26,25 @@ export default async function ProductPage({ params}: PageProps){
     return (
        
          <>
-         <section className=" flex flex-row flex-1/2 my-32 mx-[4rem] gap-20">
+         <section className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-5 py-10 sm:px-8 lg:grid lg:grid-cols-[minmax(0,80px)_minmax(0,1fr)_minmax(280px,0.8fr)] lg:gap-8 lg:px-12 lg:py-20">
             
                  <img
-                 className="aspect-auto h-[10vh]  -mr-10"
+                 className="hidden aspect-square w-full object-cover lg:block"
       src={product.image_url}
       
       alt="Picture of the author"
     />
     <img
-    className="aspect-auto w-[45vw] "
+    className="aspect-[3/4] w-full object-cover"
       src={product.image_url}
       
       alt="Picture of the author"
     />
-                <div className="flex flex-col">
-                    <h1 className="text-6xl mt-4">{product.name}</h1>
-                    <span className="text-xl font-bold mt-4">{product.price} SOLES</span>
-                    <span className="block mb-2 font-semibold mt-4">Descripción</span>
-                    <p>{product.description}</p>
+                <div className="flex min-w-0 flex-col">
+                    <h1 className="mt-1 text-3xl font-semibold sm:text-5xl lg:text-6xl">{product.name}</h1>
+                    <span className="mt-4 text-xl font-bold">{product.price} SOLES</span>
+                    <span className="mb-2 mt-6 block font-semibold">Descripción</span>
+                    <p className="leading-7 text-black/70">{product.description}</p>
                     <AddToCart
                       product={{
                         id: product.id,

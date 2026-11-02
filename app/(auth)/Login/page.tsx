@@ -4,7 +4,7 @@ import { login } from "@/server/auth-action";
 
 export default function LoginPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-white px-6 py-12 text-black">
+    <main className="flex min-h-screen items-center justify-center bg-white px-4 py-8 text-black sm:px-6 sm:py-12">
       <section className="grid w-full max-w-4xl overflow-hidden bg-white lg:grid-cols-2">
         <div className="hidden min-h-[560px] flex-col justify-between p-10 text-black lg:flex">
           <div className="flex items-center justify-between">
@@ -25,13 +25,13 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="flex items-center px-6 py-16 sm:px-12">
+        <div className="flex items-center px-5 py-10 sm:px-12 sm:py-16">
           <div className="w-full max-w-sm">
             <div className="mb-10">
               <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-black/50">
                 Zandev Store
               </p>
-              <h1 className="text-3xl font-semibold tracking-tight">Bienvenido de nuevo</h1>
+              <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Bienvenido de nuevo</h1>
               <p className="mt-3 text-sm leading-6 text-black/50">
                 Inicia sesión para continuar con tus compras.
               </p>

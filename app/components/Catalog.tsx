@@ -9,7 +9,7 @@ export async function Catalog(){
     ]);
 
     return(
-       <section className="w-screen h-screen px-[4rem] "     >
+       <section className="w-full px-5 py-8 sm:px-8 lg:px-16"     >
     {/**<hr className="border-t border-gray-300 mb-10"/>   */} 
               <main>
                   <CatalogTabs
@@ -24,4 +24,3 @@ export async function Catalog(){
        
     )
 }
-

@@ -12,9 +12,9 @@ export default async function CheckoutSuccessPage({ searchParams }: SuccessPageP
 
   if (!sessionId) {
     return (
-      <main className="mx-auto flex min-h-screen w-full max-w-xl items-center px-6 py-12">
-        <section className="w-full border border-black/10 p-8">
-          <h1 className="text-3xl font-semibold">Sesión de pago no encontrada</h1>
+      <main className="mx-auto flex min-h-screen w-full max-w-xl items-center px-5 py-8 sm:px-6 sm:py-12">
+        <section className="w-full border border-black/10 p-5 sm:p-8">
+          <h1 className="text-2xl font-semibold sm:text-3xl">Sesión de pago no encontrada</h1>
           <p className="mt-4">No recibimos el identificador de tu transacción.</p>
           <Link href="/" className="mt-8 inline-block underline">
             Volver a la tienda

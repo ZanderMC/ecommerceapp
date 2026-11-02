@@ -87,20 +87,20 @@ export function CheckoutResult({ sessionId }: CheckoutResultProps) {
     <ResultLayout title={isPaid ? "¡Pago confirmado!" : "Pago en proceso"}>
       <p>{isPaid ? "Tu pedido fue registrado correctamente." : "Stripe todavía está confirmando el pago. Te notificaremos cuando cambie el estado."}</p>
       <dl className="mt-8 space-y-3 border-y border-black/10 py-5">
-        <div className="flex justify-between gap-4">
+        <div className="flex flex-wrap justify-between gap-x-4 gap-y-1">
           <dt>Orden</dt>
           <dd className="font-semibold">#{transaction.orderId}</dd>
         </div>
-        <div className="flex justify-between gap-4">
+        <div className="flex flex-wrap justify-between gap-x-4 gap-y-1">
           <dt>Estado</dt>
           <dd className="font-semibold">{isPaid ? "Pagado" : "Pendiente"}</dd>
         </div>
-        <div className="flex justify-between gap-4">
+        <div className="flex flex-wrap justify-between gap-x-4 gap-y-1">
           <dt>Total</dt>
           <dd className="font-semibold">{formatPrice(transaction.amount)}</dd>
         </div>
         {transaction.customerEmail && (
-          <div className="flex justify-between gap-4">
+          <div className="flex flex-wrap justify-between gap-x-4 gap-y-1">
             <dt>Correo</dt>
             <dd className="font-semibold">{transaction.customerEmail}</dd>
           </div>
@@ -121,12 +121,12 @@ function ResultLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-xl items-center px-6 py-12">
-      <section className="w-full border border-black/10 p-8">
+    <main className="mx-auto flex min-h-screen w-full max-w-xl items-center px-5 py-8 sm:px-6 sm:py-12">
+      <section className="w-full border border-black/10 p-5 sm:p-8">
         <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-black/50">
           Zandev Store
         </p>
-        <h1 className="text-3xl font-semibold">{title}</h1>
+        <h1 className="text-2xl font-semibold sm:text-3xl">{title}</h1>
         <div className="mt-4 leading-6">{children}</div>
       </section>
     </main>
