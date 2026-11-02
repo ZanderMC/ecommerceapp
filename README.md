@@ -1,4 +1,4 @@
-# Zandev
+# Ecommerceapp
 
 **Live Demo:** [e-commerceapp-zdr.vercel.app](https://e-commerceapp-zdr.vercel.app/)
 
