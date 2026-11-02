@@ -18,7 +18,7 @@ export function Footer() {
                 </form>
             </div>
 
-            <p className="mt-12 text-xs text-black/60">Hecho por Zandev</p>
+            <p className="mt-12 text-xs text-black/60">Hecho por Michael Bravo 🚀</p>
         </footer>
     )
 }

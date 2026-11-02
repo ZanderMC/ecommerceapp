@@ -7,12 +7,12 @@ export default function About() {
       <Header />
       <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-16 sm:px-10 lg:px-12 lg:py-24">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
-          <section className="flex flex-col justify-center">
+          <section className="flex flex-col justify-start mt-10">
             <h1 className="text-4xl font-medium tracking-tight text-slate-950 sm:text-5xl">
-              Sobre Zandev
+              Sobre Nosotros
             </h1>
             <p className="mt-8 max-w-xl text-base leading-7 text-slate-900">
-              Zandev es una tienda de moda creada para quienes buscan prendas
+              Somos una tienda de moda creada para quienes buscan prendas
               versátiles, cómodas y con personalidad. Seleccionamos cada
               producto pensando en la calidad, el diseño y en las piezas que
               realmente quieres llevar todos los días.
