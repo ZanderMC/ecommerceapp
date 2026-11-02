@@ -14,11 +14,11 @@ export function UserPerfil({ isLoggedIn, onLogout }: UserPerfilProps){
      
     return(
         <section className="relative">
-        <button onClick={()=>{setIsOpen(!isOpen)}} className="bg-green-300 rounded-full size-6   ">
+        <button onClick={()=>{setIsOpen(!isOpen)}} className="size-6 rounded-full bg-[url('/userperfil.webp')] bg-cover bg-center">
           
         </button>
         
-        {isOpen && <article  className="   cursor-pointer absolute z-10  -bottom-27  -left-19  bg-white  rounded border-gray-400 border-1 border-solid p-4 flex flex-col gap-2 c">
+        {isOpen && <article  className="absolute right-0 top-9 z-30 flex min-w-32 cursor-pointer flex-col gap-2 rounded border border-gray-400 bg-white p-3 shadow-sm">
             {isLoggedIn ? (
                 <button
                     type="button"
