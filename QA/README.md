@@ -31,32 +31,10 @@ evitar pagos y redirecciones externas durante las pruebas.
 La estrategia combina pruebas rápidas y aisladas con pruebas de navegador. Las
 pruebas E2E no reemplazan las unitarias: cada nivel valida un riesgo diferente.
 
-## 3. Estructura de la carpeta
 
-```text
-QA/
-├── README.md
-├── unit/
-│   ├── setup.ts
-│   ├── cart.test.ts
-│   └── AddToCart.test.tsx
-├── smoke/
-│   └── smoke.spec.ts
-├── e2e/
-│   ├── critical-flows.spec.ts
-│   └── test-cases.md
-├── manual/
-│   ├── test-cases.md
-│   └── test-results.md
-└── evidence/
-    └── playwright-report/
-```
+## 3. Cobertura actual
 
-La carpeta `api/` queda fuera del alcance documentado en esta iteración.
-
-## 4. Cobertura actual
-
-### 4.1 Autenticación
+### 3.1 Autenticación
 
 Los flujos E2E cubren:
 
@@ -71,7 +49,7 @@ Los casos manuales agregan escenarios negativos:
 - Correo inválido.
 - Contraseña incorrecta.
 
-### 4.2 Catálogo y favoritos
+### 3.2 Catálogo y favoritos
 
 Se valida que:
 
@@ -83,7 +61,7 @@ Se valida que:
 - La interfaz muestre un mensaje de autorización y conserve el estado no
   favorito.
 
-### 4.3 Carrito
+### 3.3 Carrito
 
 Las pruebas unitarias cubren:
 
@@ -109,9 +87,7 @@ Las pruebas E2E cubren:
 - Eliminar el producto.
 - Mostrar el estado de carrito vacío.
 
-## 5. Smoke testing
-
-El smoke test está en [smoke.spec.ts](<C:/Users/USER/Desktop/portfolio projects/ecommerceapp/QA/smoke/smoke.spec.ts>).
+## 4. Smoke testing
 
 Valida que:
 
@@ -128,9 +104,7 @@ Este conjunto debe ejecutarse primero después de levantar una versión nueva.
 Si falla, se debe detener la regresión funcional hasta investigar el motivo.
 
 ## 6. Pruebas E2E
-
-Los flujos automatizados están en
-[critical-flows.spec.ts](<C:/Users/USER/Desktop/portfolio projects/ecommerceapp/QA/e2e/critical-flows.spec.ts>).
+.
 
 Actualmente incluyen:
 
@@ -159,8 +133,6 @@ fallos, videos y traces retenidos para facilitar el diagnóstico.
 
 ## 7. Pruebas unitarias y de componentes
 
-La configuración está en [vitest.config.ts](<C:/Users/USER/Desktop/portfolio projects/ecommerceapp/vitest.config.ts>).
-El archivo [setup.ts](<C:/Users/USER/Desktop/portfolio projects/ecommerceapp/QA/unit/setup.ts>)
 activa los matchers de Testing Library y limpia `localStorage` antes de cada
 prueba para evitar contaminación entre escenarios.
 
@@ -176,17 +148,8 @@ Ejecutar Vitest en modo observación:
 npm run test:watch
 ```
 
-El resultado esperado de la suite actual es:
-
-```text
-2 archivos de prueba
-7 pruebas exitosas
-```
-
 ## 8. Casos manuales y regresión
 
-La matriz manual se encuentra en
-[manual/test-cases.md](<C:/Users/USER/Desktop/portfolio projects/ecommerceapp/QA/manual/test-cases.md>).
 Cada caso contiene:
 
 - ID.
@@ -197,8 +160,6 @@ Cada caso contiene:
 - Pasos reproducibles.
 - Resultado esperado.
 
-El historial de ejecuciones está en
-[manual/test-results.md](<C:/Users/USER/Desktop/portfolio projects/ecommerceapp/QA/manual/test-results.md>).
 Los estados válidos son:
 
 - `Passed`: el resultado coincide con el esperado.
