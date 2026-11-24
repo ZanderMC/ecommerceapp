@@ -91,3 +91,38 @@ test("updates and removes an item from the cart", async ({ page }) => {
 
   await expect(page.getByText("Tu carrito está vacío.")).toBeVisible();
 });
+
+test("completes a purchase with Stripe test mode", async ({ page }) => {
+  test.setTimeout(90_000);
+
+  const purchaseEmail = `qa-purchase-${Date.now()}@example.com`;
+  const purchasePassword = "QaPurchase123!";
+
+  await page.goto("/Register");
+  await page.getByLabel("Nombre").fill("QA Purchase");
+  await page.getByLabel("Correo electrónico").fill(purchaseEmail);
+  await page.getByLabel("Contraseña").fill(purchasePassword);
+  await page.getByRole("button", { name: "Crear cuenta" }).click();
+  await expect(page).toHaveURL("/", { timeout: 15_000 });
+
+  const productLink = page.locator('a[href^="/Product/"]').first();
+  await expect(productLink).toBeVisible({ timeout: 15_000 });
+  await productLink.click();
+  await page.getByRole("button", { name: "Añadir al carrito" }).click();
+  await page.goto("/ShoppingCart");
+  await page.getByRole("button", { name: "Finalizar compra" }).click();
+  await page.waitForURL(/checkout\.stripe\.com/, { timeout: 30_000 });
+
+  await page.getByLabel(/email/i).fill(purchaseEmail);
+  await page.getByLabel(/card number/i).fill("4242 4242 4242 4242");
+  await page.getByLabel(/card expiry/i).fill("12 / 34");
+  await page.getByLabel(/CVC\/CVV/i).fill("123");
+  await page.getByRole("button", { name: /^pay\b/i }).click();
+
+  await expect(
+    page.getByRole("heading", { name: "¡Pago confirmado!" }),
+  ).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByText("Pagado")).toBeVisible();
+});
+
+
