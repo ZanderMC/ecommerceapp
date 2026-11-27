@@ -2,6 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./Repositorio_QA",
+  testMatch: "**/*.spec.ts",
   workers: 1,
   reporter: [["html", { outputFolder: "Repositorio_QA/evidence/playwright-report" }], ["list"]],
   use: {
