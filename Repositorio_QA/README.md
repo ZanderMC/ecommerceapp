@@ -22,11 +22,11 @@ evitar pagos y redirecciones externas durante las pruebas.
 
 | Nivel | Herramienta | Propósito | Ubicación |
 |---|---|---|---|
-| Unitario | Vitest | Validar la lógica aislada del carrito | `QA/unit` |
-| Componentes | React Testing Library | Validar componentes y acciones del usuario | `QA/unit` |
-| Smoke | Playwright | Confirmar que la aplicación responde y renderiza | `QA/smoke` |
-| E2E funcional | Playwright | Validar flujos completos en Chromium | `QA/e2e` |
-| Manual | Ejecución documentada | Cubrir escenarios funcionales, límites y regresión | `QA/manual` |
+| Unitario | Vitest | Validar la lógica aislada del carrito | `Repositorio_QA/unit` |
+| Componentes | React Testing Library | Validar componentes y acciones del usuario | `Repositorio_QA/unit` |
+| Smoke | Playwright | Confirmar que la aplicación responde y renderiza | `Repositorio_QA/smoke` |
+| E2E funcional | Playwright | Validar flujos completos en Chromium | `Repositorio_QA/e2e` |
+| Manual | Ejecución documentada | Cubrir escenarios funcionales, límites y regresión | `Repositorio_QA/manual` |
 
 La estrategia combina pruebas rápidas y aisladas con pruebas de navegador. Las
 pruebas E2E no reemplazan las unitarias: cada nivel valida un riesgo diferente.
@@ -125,7 +125,7 @@ npm run test:e2e
 Ejecutar un caso específico:
 
 ```bash
-npx playwright test QA/e2e/critical-flows.spec.ts -g "browses the catalog" --workers=1
+npx playwright test Repositorio_QA/e2e/critical-flows.spec.ts -g "browses the catalog" --workers=1
 ```
 
 La configuración utiliza Chromium, servidor local de Next.js, screenshots ante
@@ -172,11 +172,11 @@ respaldado con evidencia.
 
 ## 9. Evidencias y defectos
 
-Playwright genera el reporte HTML en `QA/evidence/playwright-report/`. Para
+Playwright genera el reporte HTML en `Repositorio_QA/evidence/playwright-report/`. Para
 abrir el último reporte:
 
 ```bash
-npx playwright show-report QA/evidence/playwright-report
+npx playwright show-report Repositorio_QA/evidence/playwright-report
 ```
 
 En un fallo se deben conservar, cuando aporten información:

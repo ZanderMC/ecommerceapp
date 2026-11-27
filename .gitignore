@@ -11,7 +11,7 @@
 !.yarn/versions
 
 # testing
-/QA/evidence
+/Repositorio_QA/evidence
 
 # next.js
 /.next/

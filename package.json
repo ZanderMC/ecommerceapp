@@ -8,10 +8,10 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "test:unit": "vitest run QA/unit",
+    "test:unit": "vitest run Repositorio_QA/unit",
     "test:watch": "vitest",
-    "test:e2e": "playwright test QA/e2e",
-    "test:smoke": "playwright test QA/smoke"
+    "test:e2e": "playwright test Repositorio_QA/e2e",
+    "test:smoke": "playwright test Repositorio_QA/smoke"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

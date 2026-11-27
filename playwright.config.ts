@@ -1,9 +1,9 @@
 import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
-  testDir: "./QA",
+  testDir: "./Repositorio_QA",
   workers: 1,
-  reporter: [["html", { outputFolder: "QA/evidence/playwright-report" }], ["list"]],
+  reporter: [["html", { outputFolder: "Repositorio_QA/evidence/playwright-report" }], ["list"]],
   use: {
     baseURL: "http://127.0.0.1:3001",
     trace: "on",
