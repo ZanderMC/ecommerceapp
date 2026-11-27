@@ -12,6 +12,9 @@
 
 # testing
 /coverage
+Repositorio_QA/test-results
+Repositorio_QA/evidence
+test-results
 
 # next.js
 /.next/
